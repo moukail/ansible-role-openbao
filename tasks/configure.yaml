@@ -1,0 +1,54 @@
+---
+- name: Ensure OpenBao plugin directory exists
+  ansible.builtin.file:
+    path: /opt/openbao/plugins
+    state: directory
+    owner: openbao
+    group: openbao
+    mode: "0750"
+
+- name: Ensure OpenBao data directory exists
+  ansible.builtin.file:
+    path: /opt/openbao/data
+    state: directory
+    owner: openbao
+    group: openbao
+    mode: "0700"
+
+- name: Ensure SoftHSM token directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+    owner: openbao
+    group: openbao
+    mode: "0700"
+  loop:
+    - /var/lib/softhsm
+    - /var/lib/softhsm/tokens
+  when: openbao_seal_type == 'pkcs11'
+
+- name: Configure openssl.cnf
+  ansible.builtin.template:
+    src: openbao.env.j2
+    dest: /etc/openbao/openbao.env
+    owner: root
+    group: root
+    mode: "0600"
+  when: openbao_seal_type == 'pkcs11'
+
+- name: Configure openbao.hcl
+  ansible.builtin.template:
+    src: openbao.hcl.j2
+    dest: /etc/openbao/openbao.hcl
+    owner: root
+    group: openbao
+    mode: "0640"
+  notify: Restart OpenBao
+
+- name: Ensure OpenBao service is enabled and started
+  ansible.builtin.systemd:
+    name: openbao
+    enabled: true
+    state: started
+    daemon_reload: true

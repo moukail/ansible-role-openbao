@@ -1,0 +1,2 @@
+---
+openbao_rpm_url: https://github.com/openbao/openbao/releases/download/v{{ openbao_version }}/openbao_{{ openbao_version }}_linux_amd64.rpm

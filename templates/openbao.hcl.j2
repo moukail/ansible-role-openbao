@@ -1,0 +1,24 @@
+ui = true
+
+storage "pebbledb" {
+  path = "/opt/openbao/data"
+}
+
+# HTTP listener:
+#listener "tcp" {
+#  address = "127.0.0.1:{{ openbao_port }}"
+#  tls_disable = 1
+#}
+
+# HTTPS listener:
+listener "tcp" {
+  address       = "0.0.0.0:{{ openbao_port }}"
+  tls_cert_file = "/opt/openbao/tls/tls.crt"
+  tls_key_file  = "/opt/openbao/tls/tls.key"
+}
+
+plugin_directory = "/opt/openbao/plugins"
+
+{% if openbao_seal_type != 'shamir' %}
+{% include openbao_seal_template %}
+{% endif %}
