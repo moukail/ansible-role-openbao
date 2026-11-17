@@ -1,4 +1,4 @@
-Ansible Role for OpenSSL
+Ansible Role for OpenBao
 =========
 
 Example Requirements
