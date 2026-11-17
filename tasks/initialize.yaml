@@ -118,7 +118,7 @@
     body_format: json
     body:
       key: "{{ item }}"
-  loop: "{{ openbao_keys[:(openbao_secret_threshold | int)] }}"
+  loop: "{{ openbao_keys[:(openbao_threshold | int)] }}"
   when:
     - openbao_seal_type == 'shamir'
     - openbao_keys is defined
