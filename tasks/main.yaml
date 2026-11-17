@@ -80,9 +80,6 @@
       Unsupported seal type '{{ openbao_seal_type }}'.
       Supported types: shamir, pkcs11, transit.
 
-- name: Configure selected seal
-  ansible.builtin.include_tasks: seal.yaml
-
 - name: Configure OpenBao
   ansible.builtin.include_tasks: configure.yaml
 
