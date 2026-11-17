@@ -1,0 +1,11 @@
+#SPDX-License-Identifier: MIT-0
+---
+galaxy_info:
+  author: I Moukafih
+  description: Ansible Role for OpenBao
+  license: MIT
+  min_ansible_version: "2.1"
+  galaxy_tags:
+    - OpenBao    
+    - Vault
+    - security
