@@ -46,6 +46,7 @@ Example Playbook
         msg:
           - "OpenBAO address: https://{{ ansible_facts['default_ipv4']['address'] }}:{{ openbao_port }}"
           - "OpenBAO token: {{ openbao_token }}"
-      when: openbao_token is defined
+          - "OpenBAO keys: {{ openbao_keys }}"
+      when: openbao_token is defined and openbao_keys is defined
 
 ```
