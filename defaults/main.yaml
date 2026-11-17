@@ -9,6 +9,8 @@ openbao_shares: 5
 openbao_threshold: 3
 
 # PKCS#11 configuration
+softhsm_conf_path: /etc/softhsm2.conf
+
 openbao_pkcs11:
   plugin_image: "ghcr.io/openbao/openbao-plugin-kms-pkcs11:v0.3.0"
   plugin_sha256: "babba58243c7db7ffb9b906e25f35643704e8814792f5b678b3c215acba284f5"

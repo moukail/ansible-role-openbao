@@ -28,7 +28,7 @@
     - /var/lib/softhsm/tokens
   when: openbao_seal_type == 'pkcs11'
 
-- name: Configure openssl.cnf
+- name: Configure openbao.env
   ansible.builtin.template:
     src: openbao.env.j2
     dest: /etc/openbao/openbao.env
