@@ -1,0 +1,40 @@
+---
+- name: Create directory for OpenBAO TLS files
+  ansible.builtin.file:
+    path: /opt/openbao/tls
+    state: directory
+    mode: "0755"
+
+- name: Check existing OpenBao TLS certificate
+  ansible.builtin.stat:
+    path: /opt/openbao/tls/tls.crt
+  register: openbao_tls_cert
+
+- name: Configure openssl.cnf
+  ansible.builtin.template:
+    src: openssl.cnf.j2
+    dest: /opt/openbao/tls/openssl.cnf
+    mode: "0644"
+  register: openbao_tls_config
+
+- name: Generate OpenSSL key and certificate
+  ansible.builtin.command: >
+    openssl req -x509 -nodes -days 3650
+    -newkey rsa:4096
+    -keyout /opt/openbao/tls/tls.key
+    -out /opt/openbao/tls/tls.crt
+    -config /opt/openbao/tls/openssl.cnf
+  when: >
+    openbao_tls_config.changed or
+    not openbao_tls_cert.stat.exists
+  notify: Restart OpenBao
+
+- name: chmod TLS key
+  ansible.builtin.file:
+    path: /opt/openbao/tls/tls.crt
+    mode: "0644"
+
+- name: chmod TLS key
+  ansible.builtin.file:
+    path: /opt/openbao/tls/tls.key
+    mode: "0600"
